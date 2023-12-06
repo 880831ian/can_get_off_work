@@ -9,6 +9,7 @@ NC='\033[0m' # 重置颜色
 total_minutes=0
 target_days=0 # 初始化目標天數
 last_end_time=0
+extra_minutes=0
 
 calculate_minutes() {
     start_time=$1
@@ -62,6 +63,9 @@ while IFS=$'\t' read -r date start_time end_time || [ -n "${start_time}" ]; do
 
     # 累加總分鐘數
     total_minutes=$((total_minutes + daily_minutes))
+
+    # 多餘的分鐘數
+    extra_minutes=$(((daily_minutes - 540) + ${extra_minutes}))
 done < <(awk '{a[i++]=$0} END {for (j=i-1; j>=0;) print a[j--] }' work_time.txt)
 
 target_hours=$((target_days * 9))
@@ -69,7 +73,7 @@ target_minutes=$((target_hours * 60))
 
 # 判斷是否已達到或超過目標工作時數
 if [ $total_minutes -ge $target_minutes ]; then
-    echo -e "${GREEN}已達到或超過 ${target_hours} 小時 (${target_days} 天) 。${NC}"
+    echo -e "${GREEN}已達到或超過 ${target_hours} 小時 (${target_days} 天)，已多出 ${extra_minutes} 分鐘。${NC}"
 else
     # 計算還差多少分鐘
     remaining_minutes=$((target_minutes - total_minutes))
