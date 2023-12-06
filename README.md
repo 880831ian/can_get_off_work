@@ -29,3 +29,11 @@
 <br>
 
 如果下班打卡欄位空白，會自動帶入現在時間，如果沒有上班打卡，則當日不計算工時。
+
+<br>
+
+3. 如果超過下班時間，會顯示多餘時間，如下圖
+
+<br>
+
+![圖片](https://raw.githubusercontent.com/880831ian/can_get_off_work/master/images/3.png)
