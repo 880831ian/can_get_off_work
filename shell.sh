@@ -10,6 +10,7 @@ total_minutes=0
 target_days=0 # 初始化目標天數
 last_end_time=0
 extra_minutes=0
+today_5_30=$(date -jf "%H:%M" "17:30" +%s) # 最早下班的時間
 
 calculate_minutes() {
     start_time=$1
@@ -79,11 +80,21 @@ else
     remaining_minutes=$((target_minutes - total_minutes))
 
     # 計算最後一天的下班時間
-    last_end_minutes=$(date -jf "%H:%M" "${last_end_time}" +%s)
+    last_end_seconds=$(date -jf "%H:%M" "${last_end_time}" +%s)
     remaining_seconds=$((remaining_minutes * 60))
-    last_end_minutes=$((last_end_minutes + remaining_seconds))
-    last_day_end_time=$(date -jf "%s" "${last_end_minutes}" +"%H:%M")
+    last_end_seconds=$((last_end_seconds + remaining_seconds))
+
+    if [ "$last_end_seconds" -lt "$today_5_30" ]; then
+        last_extra_seconds=$((today_5_30 - last_end_seconds))
+    fi
+
+    last_day_end_time=$(date -jf "%s" "${last_end_seconds}" +"%H:%M")
+    today_5_30_time=$(date -jf "%s" "${today_5_30}" +"%H:%M")
+    last_extra_time=$((last_extra_seconds / 60))
 
     echo -e "\n總工時還差 ${YELLOW}${remaining_minutes}${NC} 分鐘達到 ${target_hours} 小時 (${target_days} 天) 。"
     echo -e "最後一天還需 ${YELLOW}${remaining_minutes}${NC} 分鐘，才能打卡，最後一天打卡應該為：${GREEN}${last_day_end_time}${NC} (//●⁰౪⁰●)//"
+    if [ "$last_end_seconds" -lt "$today_5_30" ]; then
+        echo -e "最後一天還多 ${YELLOW}${last_extra_time}${NC} 分鐘，最後一天打卡應該為：${GREEN}${today_5_30_time}${NC} (//●⁰౪⁰●)//"
+    fi
 fi
