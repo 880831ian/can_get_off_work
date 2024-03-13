@@ -11,6 +11,7 @@ target_days=0 # 初始化目標天數
 last_end_time=0
 extra_minutes=0
 today_5_30=$(date -jf "%H:%M" "17:30" +%s) # 最早下班的時間
+pwd=$(dirname "$0")
 
 calculate_minutes() {
     start_time=$1
@@ -67,7 +68,7 @@ while IFS=$'\t' read -r date start_time end_time || [ -n "${start_time}" ]; do
 
     # 多餘的分鐘數
     extra_minutes=$(((daily_minutes - 540) + ${extra_minutes}))
-done < <(awk '{a[i++]=$0} END {for (j=i-1; j>=0;) print a[j--] }' work_time.txt)
+done < <(awk '{a[i++]=$0} END {for (j=i-1; j>=0;) print a[j--] }' $pwd/work_time.txt)
 
 target_hours=$((target_days * 9))
 target_minutes=$((target_hours * 60))
@@ -95,6 +96,6 @@ else
     echo -e "\n總工時還差 ${YELLOW}${remaining_minutes}${NC} 分鐘達到 ${target_hours} 小時 (${target_days} 天) 。"
     echo -e "最後一天還需 ${YELLOW}${remaining_minutes}${NC} 分鐘，才能打卡，最後一天打卡應該為：${GREEN}${last_day_end_time}${NC} (//●⁰౪⁰●)//"
     if [ "$last_end_seconds" -lt "$today_5_30" ]; then
-        echo -e "最後一天還多 ${YELLOW}${last_extra_time}${NC} 分鐘，最後一天打卡應該為：${GREEN}${today_5_30_time}${NC} (//●⁰౪⁰●)//"
+        echo -e "可是呢，因為最早下班時間規定，最後一天還必須多留 ${YELLOW}${last_extra_time}${NC} 分鐘，最後一天打卡應該為：${GREEN}${today_5_30_time}${NC} ლ(◉◞౪◟◉ )ლ"
     fi
 fi
