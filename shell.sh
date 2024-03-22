@@ -37,7 +37,13 @@ while IFS=$'\t' read -r date start_time end_time || [ -n "${start_time}" ]; do
     if [ -z "${end_time}" ]; then
         end_time=$(date +"%H:%M")
         end_time_tip=" (當下時間)"
+    else
+        # 去除時間後面的括號
+        end_time=$(echo "${end_time}" | sed 's/([^)]*)//g')
     fi
+
+    # 去除時間後面的括號
+    start_time=$(echo "${start_time}" | sed 's/([^)]*)//g')
 
     # 紀錄每次的 end_time
     last_end_time=${end_time}
