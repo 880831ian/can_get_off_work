@@ -24,7 +24,7 @@
 
 <br>
 
-![圖片](https://raw.githubusercontent.com/880831ian/can_get_off_work/master/images/2.png)
+![圖片](https://raw.githubusercontent.com/880831ian/can_get_off_work/master/images/work.png)
 
 <br>
 
