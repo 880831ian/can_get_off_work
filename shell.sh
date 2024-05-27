@@ -73,11 +73,14 @@ calculate_minutes() {
         overtime_tip=""
     elif ((time_diff < 60)); then
         status=$late_status"${YELLOW}可報加班${NC}"
-        overtime_caption="\n| 可報時段：${PURPLE}$real_end_time ~ $2${NC} [ ${YELLOW}${time_diff}${NC} 分鐘 ]"
-        overtime_tip=" (可以再等等，超過 60 分鐘，有 90 元誤餐費 xD) |"
-    elif ((time_diff >= 60)); then
+        overtime_caption="\n| 可報時段：${PURPLE}$real_end_time ~ $2${NC} [ ${YELLOW}${time_diff}${NC} 分鐘 ]  |"
+        overtime_tip=" (可以再等等，超過 60 分鐘，有 90 元誤餐費 xD)           |"
+    elif ((time_diff >= 100)); then
         status=$late_status"${YELLOW}可報加班${NC}"
         overtime_caption="\n| 可報時段：${PURPLE}$real_end_time ~ $2${NC} [ ${YELLOW}${time_diff}${NC} 分鐘 ] |"
+    elif ((time_diff >= 60)); then
+        status=$late_status"${YELLOW}可報加班${NC}"
+        overtime_caption="\n| 可報時段：${PURPLE}$real_end_time ~ $2${NC} [ ${YELLOW}${time_diff}${NC} 分鐘 ]  |"
     fi
 }
 
@@ -92,7 +95,7 @@ while IFS=$'\t' read -r date start_time end_time || [ -n "${start_time}" ]; do
     # 如果 end_time 為空白，則帶入當下時間
     if [ -z "${end_time}" ]; then
         end_time=$(date +"%H:%M")
-        end_time_tip=" (當下時間)"
+        end_time_tip=" (Now)"
     else
         # 去除時間後面的括號
         end_time=$(echo "${end_time}" | sed 's/([^)]*)//g')
