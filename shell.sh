@@ -52,9 +52,9 @@ show_class() {
 
 calculate_minutes() {
     real_hour=$(echo $1 | cut -d: -f1 | sed 's/^0*//')
-    real_minute=$(echo $1 | cut -d: -f2)
+    real_minute=$(echo $1 | cut -d: -f2 | sed 's/^0*//')
     end_hour=$(echo $2 | cut -d: -f1 | sed 's/^0*//')
-    end_minute=$(echo $2 | cut -d: -f2)
+    end_minute=$(echo $2 | cut -d: -f2 | sed 's/^0*//')
 
     real_total_minutes=$((real_hour * 60 + real_minute))
     end_total_minutes=$((end_hour * 60 + end_minute))
